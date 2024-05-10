@@ -1,25 +1,31 @@
-name: DingTalk Notification with Signature
+name: Run DingTalk Robot and Send Message
 
-on:
-  push:
-    branches: [ main ]
+on: [push]  # 触发条件，这里以push事件为例
 
 jobs:
-  dingtalk-notification:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
-        
-    - name: install requests
-      run:
-        pip install requests
-        
-    - name: run dingtalk_notify.py
-      run: |
-        python dingtalk_notify.py
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker environment
       env:
-        DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
-        DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        SECRET: ${{ secrets.SECRET }}
+      run: |
+        docker run -d --name dingtalk-robot --restart=unless-stopped -p 8080:8080 \
+          -e ACCESS_TOKEN="$ACCESS_TOKEN" \
+          -e SECRET="$SECRET" \
+          -e LOG_LEVEL="info" \
+          jerryin/dingtalk-robot
+
+    - name: Wait for DingTalk Robot to start
+      run: |
+        sleep 10s
+
+    - name: Send message using DingTalk Robot
+      run: |
+        curl -X POST 'http://localhost:8080/robot/send' \
+             -H 'Content-Type: application/json' \
+             -d '{"text": "简单文本"}'
