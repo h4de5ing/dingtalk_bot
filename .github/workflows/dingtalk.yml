@@ -10,6 +10,7 @@ jobs:
         echo "timestamp=$(date +%s)" >> $GITHUB_ENV
         # 假设你使用了一个简单的哈希函数来生成签名，实际应用中应使用更安全的算法
         echo "sign=$(echo -n $timestamp | openssl dgst -sha256 -hmac ${{ env.DINGTALK_SECRET }})" >> $GITHUB_ENV
+        echo $GITHUB_ENV
 
     - name: DingTalk Notification
       uses: distributhor/workflow-webhook@v2
