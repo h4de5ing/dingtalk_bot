@@ -1,0 +1,26 @@
+name: DingTalk Push
+on: [push,pull_request,issues]  # Trigger on push events
+jobs:
+  dingtalk:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate Timestamp and Sign
+      id: generate
+      run: |
+        echo "timestamp=$(date +%s)" >> $GITHUB_ENV
+        # 假设你使用了一个简单的哈希函数来生成签名，实际应用中应使用更安全的算法
+        echo "sign=$(echo -n $timestamp | openssl dgst -sha256 -hmac ${{ secrets.DINGTALK_SECRET }})" >> $GITHUB_ENV
+
+    - name: DingTalk Notification
+      uses: distributhor/workflow-webhook@v2
+      with:
+        url: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+        payload: |
+          {
+            "timestamp": "${{ env.timestamp }}",
+            "sign": "${{ env.sign }}",
+            "msgtype": "text",
+            "text": {
+              "content": "New push event: ${{ github.event.head_commit.message }}"
+            }
+          }
