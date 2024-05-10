@@ -34,7 +34,7 @@ def send_dingtalk_message(webhook_url, content, secret):
 if __name__ == "__main__":
     webhook_url = os.environ.get('DINGTALK_WEBHOOK')
     secret = os.environ.get('DINGTALK_SECRET')
-    content = "这是一条来自GitHub Actions的带签名消息。"
+    content = "GitHub Actions"
     if send_dingtalk_message(webhook_url, content, secret):
         print("DingTalk message sent successfully!")
     else:

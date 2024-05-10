@@ -13,11 +13,10 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: DingTalk Notification with Signature
+    - name: run dingtalk_notify.py
       run: |
         pip install requests
-        ls
-        python ../.github/workflows/dingtalk_notify.py
+        python dingtalk_notify.py
       env:
         DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
         DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
