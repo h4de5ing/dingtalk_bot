@@ -9,12 +9,12 @@ jobs:
       run: |
         echo "timestamp=$(date +%s)" >> $GITHUB_ENV
         # 假设你使用了一个简单的哈希函数来生成签名，实际应用中应使用更安全的算法
-        echo "sign=$(echo -n $timestamp | openssl dgst -sha256 -hmac ${{ secrets.DINGTALK_SECRET }})" >> $GITHUB_ENV
+        echo "sign=$(echo -n $timestamp | openssl dgst -sha256 -hmac ${{ dingtalk.DINGTALK_SECRET }})" >> $GITHUB_ENV
 
     - name: DingTalk Notification
       uses: distributhor/workflow-webhook@v2
       with:
-        url: https://oapi.dingtalk.com/robot/send?access_token=${{ secrets.DINGTALK_WEBHOOK_URL }}
+        url: https://oapi.dingtalk.com/robot/send?access_token=${{ dingtalk.DINGTALK_WEBHOOK_URL }}
         payload: |
           {
             "timestamp": "${{ env.timestamp }}",
