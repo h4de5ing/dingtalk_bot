@@ -22,10 +22,8 @@ jobs:
 
     - name: Wait for DingTalk Robot to start
       run: |
-        sleep 10s
+        sleep 3s
 
     - name: Send message using DingTalk Robot
       run: |
-        curl -X POST 'http://localhost:8080/robot/send' \
-             -H 'Content-Type: application/json' \
-             -d '{"text": "简单文本"}'
+        curl -X POST 'http://localhost:8080/robot/send' -H 'Content-Type: application/json' -d '{"text": "git push"}'
