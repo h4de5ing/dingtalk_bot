@@ -1,6 +1,6 @@
 name: Run DingTalk Robot and Send Message
 
-on: [push]
+on: [push,pull_request]
 
 jobs:
   build:
@@ -22,8 +22,8 @@ jobs:
 
     - name: Wait for DingTalk Robot to start
       run: |
-        sleep 3s
+        sleep 1s
 
     - name: Send message using DingTalk Robot
       run: |
-        curl -X POST 'http://localhost:8080/robot/send' -H 'Content-Type: application/json' -d '{"text": "${{ github.repository }} 更新了"}'
+        curl -X POST 'http://localhost:8080/robot/send' -H 'Content-Type: application/json' -d '{"markdown":{"title":"${{ github.repository }}","text":"${{ github.event.head_commit.message }}"}}'
