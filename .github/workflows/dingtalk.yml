@@ -1,6 +1,6 @@
 name: Run DingTalk Robot and Send Message
 
-on: [push]  # 触发条件，这里以push事件为例
+on: [push]
 
 jobs:
   build:
@@ -26,4 +26,4 @@ jobs:
 
     - name: Send message using DingTalk Robot
       run: |
-        curl -X POST 'http://localhost:8080/robot/send' -H 'Content-Type: application/json' -d '{"text": "git push"}'
+        curl -X POST 'http://localhost:8080/robot/send' -H 'Content-Type: application/json' -d '{"text": "${{ github.repository }} 更新了"}'
