@@ -14,7 +14,7 @@ jobs:
     - name: DingTalk Notification
       uses: distributhor/workflow-webhook@v2
       with:
-        url: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+        url: https://oapi.dingtalk.com/robot/send?access_token=${{ secrets.DINGTALK_WEBHOOK_URL }}
         payload: |
           {
             "timestamp": "${{ env.timestamp }}",
